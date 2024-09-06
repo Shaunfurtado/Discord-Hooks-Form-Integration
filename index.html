@@ -7,17 +7,14 @@
     <link rel="stylesheet" href="https://matcha.mizu.sh/matcha.css">
 </head>
 <body>
-    <form action="https://api.web3forms.com/submit" method="POST" id="form">
-        <input type="hidden" name="subject" value="New Submission from Web3Forms">
-    <input type="email" name="email" required>
-    <input type="text" name="name" required>
-    <input type="text" name="phone" required>
-    <textarea name="message" required></textarea>
-
-    <button type="submit">Submit</button>
-
-    <div id="result"></div>
-
+    <form id="form">
+      <input type="hidden" name="subject" value="New Submission from Web3Forms">
+      <input type="email" name="email" required>
+      <input type="text" name="name" required>
+      <input type="text" name="phone" required>
+      <textarea name="message" required></textarea>
+      <button type="submit">Submit</button>
+      <div id="result"></div>
 </form>
 <script>
     const form = document.getElementById('form');
@@ -28,20 +25,19 @@
       e.preventDefault();
       const formData = new FormData(form);
       const object = Object.fromEntries(formData);   
-    
-    
+
       const discordWebhookUrl = object.discordWebhookUrl;
-      delete object.discordWebhookUrl; // Remove from object before sending to Discord
+      delete object.discordWebhookUrl;
     
       const message = {
-        username: object.name, // Replace with appropriate key names
+        username: object.name,
         content: `**Name:** ${object.name}\n**Email:** ${object.email}\n**Phone:** ${object.phone}\n**Message:** ${object.message}`,
       };
     
       const json = JSON.stringify(message);
       result.innerHTML = "Please wait...";
     
-      fetch("https://discord.com/api/webhooks/1278239780911583243/6CPq2DiDSQbD2S6TyjEW_YBeE9UW-UQpvG-a1lG4hzzzFbMNofN6oHjC5_4SBu9wINHJ", {
+      fetch("YOUR_DISCORD_WEBHOOK_URL", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,17 +47,12 @@
       .then(async (response) => {
         if (response.status === 200) {
           const data = await response.json();
-          // Process the response data here
           result.innerHTML = "Message sent successfully!";
-        } else if (response.status === 204) {
-          result.innerHTML = "Request processed successfully (no content)";
         } else {
-          console.error(response);
           result.innerHTML = "An error occurred.";
         }
       })
         .catch(error => {
-          console.error(error);
           result.innerHTML = "Something went wrong!";
         })
         .then(function() {
