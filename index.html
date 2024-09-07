@@ -16,18 +16,41 @@
         <label for="discordWebhookUrl">Discord Webhook URL</label>
         <input type="text" id="discordWebhookUrl" name="discordWebhookUrl" placeholder="DISCORD_WEBHOOK_URL" required>
       </form>
-      <br>
+      <details>
+        <summary>How to get Discord Webhook URL?</summary>
+        <p>To get a Discord webhook URL, you can do the following:</p>
+        <ol>
+          <li>Open Discord and select the server</li>
+          <li>Select the Server drop-down menu and click Server Settings</li>
+          <li>Select the Apps/Integrations tab</li>
+          <li>Click Create Webhook</li>
+          <li>Customize the name and avatar for your webhook</li>
+          <li>Copy the webhook URL</li>
+        </ol>
+        <p>You can also create a webhook by following these steps:</p>
+        <ol>
+          <li>Open the Discord channel you want to receive notifications for</li>
+          <li>Select Edit channel from the channel menu</li>
+          <li>Click Create Webhook</li>
+          <li>Enter a Webhook Name</li>
+          <li>Select a channel from the drop-down menu</li>
+          <li>Scroll down to find the Webhook URL</li>
+          <li>Copy the URL and save it</li>
+        </ol>
+      </details>
     </div>
-  </aside>
-    <form id="form">
-      <h2>Discord Hooks Form Integration</h2>
-      <input type="hidden" name="subject" value="New Submission from Web3Forms">
-      <input type="email" name="email" placeholder="Enter Your E-mail" required>
-      <input type="text" name="name" placeholder="Enter your Name" required>
-      <textarea name="message" placeholder="Enter Your Message" required></textarea><br>
-      <button type="submit">Submit</button>
-      <div id="result"></div>
-</form>
+  </aside><br>
+  <div>
+        <form id="form">
+          <h2>Discord Hooks Form Integration</h2>
+          <input type="hidden" name="subject" value="New Submission from Web3Forms">
+          <input type="email" name="email" placeholder="Enter Your E-mail" required>
+          <input type="text" name="name" placeholder="Enter your Name" required>
+          <textarea name="message" placeholder="Enter Your Message" required></textarea><br>
+          <button type="submit">Submit</button>
+          <div id="result"></div>
+        </form>
+  </div>
 <script>
     const form = document.getElementById('form');
     const hookForm = document.getElementById('hookForm');
