@@ -2,6 +2,10 @@
 
 This repository provides a way to use Discord hooks to integrate forms into your static websites. The example included demonstrates how to create a contact form that sends submissions directly to a Discord channel using webhooks.
 
+Demo Link : [Link](https://shaunfurtado.is-a.dev/Discord-Hooks-Form-Integration/)
+
+`Note` : Demo is Hosted on Github Pages.
+
 ## Files
 
 - `form.tsx`: Contains the Next.js component for the contact form with Tailwind CSS.

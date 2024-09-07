@@ -7,37 +7,66 @@
     <link rel="stylesheet" href="https://matcha.mizu.sh/matcha.css">
 </head>
 <body>
+  <aside>
+    <div>
+      <h2>Hello there</h2>
+      <p>Enter your Discord Webhook Url to try out the demo</p>
+      <br>
+      <form id="hookForm">
+        <label for="discordWebhookUrl">Discord Webhook URL</label>
+        <input type="text" id="discordWebhookUrl" name="discordWebhookUrl" placeholder="DISCORD_WEBHOOK_URL" required>
+      </form>
+      <br>
+    </div>
+  </aside>
     <form id="form">
+      <h2>Discord Hooks Form Integration</h2>
       <input type="hidden" name="subject" value="New Submission from Web3Forms">
-      <input type="email" name="email" required>
-      <input type="text" name="name" required>
-      <input type="text" name="phone" required>
-      <textarea name="message" required></textarea>
+      <input type="email" name="email" placeholder="Enter Your E-mail" required>
+      <input type="text" name="name" placeholder="Enter your Name" required>
+      <textarea name="message" placeholder="Enter Your Message" required></textarea><br>
       <button type="submit">Submit</button>
       <div id="result"></div>
 </form>
 <script>
     const form = document.getElementById('form');
+    const hookForm = document.getElementById('hookForm');
     const result = document.getElementById('result');
     
-    form.addEventListener('submit',   
-     function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(form);
-      const object = Object.fromEntries(formData);   
+      const hookFormData = new FormData(hookForm);
+      const object = Object.fromEntries(formData); 
+      const hookObject = Object.fromEntries(hookFormData);
 
-      const discordWebhookUrl = object.discordWebhookUrl;
-      delete object.discordWebhookUrl;
+      const discordWebhookUrl = hookObject.discordWebhookUrl;
+
+      {{/*  const discordWebhookUrl = object.discordWebhookUrl;
+      delete object.discordWebhookUrl;  */}}
     
       const message = {
         username: object.name,
-        content: `**Name:** ${object.name}\n**Email:** ${object.email}\n**Phone:** ${object.phone}\n**Message:** ${object.message}`,
+        embeds: [
+          {
+        title: "New Message from Your Website",
+        description: "You've received a new message via your website contact form.",
+        color: 0x5865f2,
+        fields: [
+          { name: "Name", value: object.name, inline: true },
+          { name: "Email", value: object.email, inline: true },
+          { name: "Message", value: object.message },
+        ],
+        footer: { text: "Contact Form" },
+        timestamp: new Date().toISOString(),
+          },
+        ],
       };
     
       const json = JSON.stringify(message);
       result.innerHTML = "Please wait...";
     
-      fetch("YOUR_DISCORD_WEBHOOK_URL", {
+      fetch(discordWebhookUrl, {   // Your Discord Webhook URL directly in the fetch method
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,22 +74,15 @@
         body: json,
       })
       .then(async (response) => {
-        if (response.status === 200) {
-          const data = await response.json();
+        if (response.status === 200 || response.status === 204) {
           result.innerHTML = "Message sent successfully!";
         } else {
-          result.innerHTML = "An error occurred.";
+          result.innerHTML = "Failed to send message.";
         }
       })
-        .catch(error => {
-          result.innerHTML = "Something went wrong!";
-        })
-        .then(function() {
-          form.reset();
-          setTimeout(() => {
-            result.style.display = "none";
-          }, 3000);
-        });
+      .catch((error) => {
+        result.innerHTML = "Error: " + error.message;
+      });
     });
 </script>
 </body>
